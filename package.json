@@ -4,7 +4,7 @@
   "description": "Puppeteer Report",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --reporter mochawesome --timeout 60000"
+    "test": "mocha tests --reporter mochawesome --timeout 60000"
   },
   "author": "saalamsaifi@gmail.com",
   "license": "ISC",
