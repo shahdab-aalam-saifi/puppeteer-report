@@ -10,8 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.3.4",
+    "chalk": "^4.1.1",
+    "dotenv": "^10.0.0",
     "mocha": "^9.0.1",
     "mochawesome": "^6.2.2",
-    "puppeteer": "^10.1.0"
+    "puppeteer-core": "^10.1.0"
   }
 }

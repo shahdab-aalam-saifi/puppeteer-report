@@ -1,20 +1,16 @@
-const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer-core");
 const expect = require("chai").expect;
+const config = require("./Config");
 
 let browser = null;
 let page = null;
 
 describe("Home", () => {
   before(async () => {
-    browser = await puppeteer.launch({
-      headless: false,
-      slowMo: 10,
-      defaultViewport: null,
-      args: ["--start-maximized"],
-    });
+    browser = await puppeteer.launch(config.default.browser);
     page = await browser.newPage();
 
-    await page.setViewport({ width: 1440, height: 1058 });
+    await page.setViewport(config.default.viewport);
   });
 
   after(async () => {
