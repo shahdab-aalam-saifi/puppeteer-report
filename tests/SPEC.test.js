@@ -14,11 +14,13 @@ describe("S.P.E.C.", () => {
   before(async () => {
     browser = await puppeteer.launch({
       ...config.default.browser,
-      headless: true,
+      headless: false,
     });
     page = await browser.newPage();
 
     await page.setViewport(config.default.viewport);
+
+    await page.goto("https://www.google.com/", { waitUntil: "networkidle2" });
   });
 
   after(async () => {
@@ -47,13 +49,40 @@ describe("S.P.E.C.", () => {
     });
   });
 
-  it("should show browser details", async () => {
-    const version = await browser.version();
-    const userAgent = await browser.userAgent();
-    const ws = await browser.wsEndpoint();
+  describe("browser", () => {
+    it("should show browser details", async () => {
+      const version = await browser.version();
+      const userAgent = await browser.userAgent();
+      const ws = await browser.wsEndpoint();
 
-    print(`Web Socket: ${ws}`);
-    print(`Version: ${version}`);
-    print(`User Agent: ${userAgent}`);
+      print(`Web Socket: ${ws}`);
+      print(`Version: ${version}`);
+      print(`User Agent: ${userAgent}`);
+    });
+  });
+
+  describe("page", () => {
+    it("event", async () => {
+      page.on("console", (message) => {
+        print("[CONSOLE] " + message.text());
+      });
+
+      await page.evaluate(() => console.log("Chromium"));
+
+      page.on("dialog", async (dialog) => {
+        print("[ALERT] " + dialog.message());
+
+        dialog.dismiss();
+      });
+
+      await page.evaluate(() => alert(new Date()));
+    });
+
+    it("should enter text in search", async () => {
+      await page.waitForSelector("input[name='q']");
+      await page.focus("input[name='q']");
+      await page.keyboard.type("Puppeteer");
+      await page.screenshot({ path: "SPEC_Screenshot.png" });
+    });
   });
 });
